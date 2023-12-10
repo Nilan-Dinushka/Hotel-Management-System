@@ -1,5 +1,6 @@
 package lk.ijse.dep11.backend.service;
 
+import lk.ijse.dep11.backend.exception.ResourceNotFoundException;
 import lk.ijse.dep11.backend.model.Room;
 import lk.ijse.dep11.backend.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,5 +30,29 @@ public class RoomServiceImpl implements IRoomService{
             room.setPhoto(photoBlob);
         }
         return ROOM_REPOSITORY.save(room);
+    }
+
+    @Override
+    public List<String> getAllRoomTypes() {
+        return  ROOM_REPOSITORY.findDistinctRoomTypes();
+    }
+
+    @Override
+    public List<Room> getAllRooms() {
+        return ROOM_REPOSITORY.findAll();
+    }
+
+    @Override
+    public byte[] getRoomPhotoByRoomId(Long roomId) throws SQLException {
+        Optional<Room> theRoom = ROOM_REPOSITORY.findById(roomId);
+
+        if(theRoom.isEmpty()){
+            throw new ResourceNotFoundException("Sorry, Room not Found");
+        }
+        Blob photoBlob = theRoom.get().getPhoto();
+        if(photoBlob!=null){
+            return  photoBlob.getBytes(1,(int)photoBlob.length());
+        }
+        return new byte[0];
     }
 }
