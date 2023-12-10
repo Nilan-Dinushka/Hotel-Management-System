@@ -48,6 +48,7 @@ public class BookedRoom {
 
 
     public void calculateTotalNumberOfGuest(){
+
         this.totalNumOfGuest = this.numOfAdults + this.numOfChildren;
     }
 
