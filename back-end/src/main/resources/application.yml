@@ -4,8 +4,8 @@ server:
 spring:
   datasource:
     username: root
-    password: oppo33
-    url: jdbc:mysql://localhost:12500/lakeside_hotel
+    password: nilan1995
+    url: jdbc:mysql://localhost:3306/lakeside_hotel
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true

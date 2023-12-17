@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {ChangeEvent, FormEvent, useState} from "react";
 import {addRoom} from "../utils/ApiFunctions.ts";
 import {RoomTypeSelector} from "../common/RoomTypeSelector.tsx";
 
@@ -13,27 +13,31 @@ export function AddRoom() {
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
-    const handleRoomInputChange = (e: { target: { name: any; value: any; }; }) => {
+    const handleRoomInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const name = e.target.name;
-        let value  = e.target.value;
-        if(name === "roomPrice"){
-            if(!isNaN(value)){
-                value.parseInt(value)
-            };
-        }else {
+        let value = e.target.value;
+
+        if (name === "roomPrice") {
+            if (!isNaN(Number(value))) {
+                value = String(parseInt(value, 10));
+            } else {
+                value = "";
+            }
+        } else {
             value = "";
         }
         setNewRoom({...newRoom,[name]:value})
     }
 
-    const handleImageChange = (e: { target: { files: any[]; value: any; }; }) => {
-        const selectedImage = e.target.files[0];
+    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const selectedImage = e.target.files![0];
         let value  = e.target.value;
+        // @ts-ignore
         setNewRoom({...newRoom,photo: selectedImage});
         setImagePreview(URL.createObjectURL(selectedImage));
     }
 
-    const handleSubmit = async (e: { preventDefault: () => void; }) => {
+    const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try{
            const success = await addRoom(newRoom.photo!,newRoom.roomType, newRoom.roomPrice);
@@ -45,12 +49,10 @@ export function AddRoom() {
            }else {
                setErrorMessage("Error adding room");
            }
-        }catch (err){
-            // @ts-ignore
+        }catch (err: any){
             setErrorMessage(err.message)
         }
     }
-    // @ts-ignore
     return (
         <>
         <section className={"container mt-5 mb-5"}>

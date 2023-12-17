@@ -11,14 +11,14 @@ export async function addRoom(photo: Blob, roomType:string, roomPrice:string){
     formData.append("roomType", roomType);
     formData.append("roomPrice", roomPrice);
 
-    const response = await api.post("/room/add/new-room",formData);
+    const response = await api.post("/rooms/add/new-room",formData);
     return response.status === 201;
 }
 
 // This function get all room types from database
 export async function getRoomTypes(){
     try{
-        const response = await api.get("/rooms/room-types");
+        const response = await api.get("/rooms/room/types");
         return response.data;
     }catch (err){
         throw new Error("Error getting room types");

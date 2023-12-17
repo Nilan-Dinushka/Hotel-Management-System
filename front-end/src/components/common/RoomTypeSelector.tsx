@@ -13,7 +13,7 @@ export function RoomTypeSelector({handleRoomInputChange, newRoom}) {
         })
     }, []);
 
-    const handleNewTypeRoomInputChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const handleNewTypeRoomInputChange = (e:ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
         setNewRoomType(e.target.value);
     }
 
@@ -30,7 +30,7 @@ export function RoomTypeSelector({handleRoomInputChange, newRoom}) {
         <>
             {roomTypes.length > 0 && (
                 <div>
-                    <select name="roomType" id="roomType" value={newRoom.roomType} onChange={(e) => {
+                    <select className={"form-select"} name="roomType" id="roomType" value={newRoom.roomType} onChange={(e) => {
                         if(e.target.value === "Add New"){
                             setShowNewRoomTypeInput(true)
                         }else {
@@ -44,8 +44,6 @@ export function RoomTypeSelector({handleRoomInputChange, newRoom}) {
                                 {type}
                             </option>
                         ))}
-                        
-
                         </select>
                     {showNewRoomTypeInput && (
                         <div className={"input-group"}>

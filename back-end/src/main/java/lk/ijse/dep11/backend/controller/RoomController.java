@@ -24,6 +24,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/rooms")
+@CrossOrigin
 public class RoomController {
     private final IRoomService ROOM_SERVICE;
     private final BookingService BOOKING_SERVICE;
