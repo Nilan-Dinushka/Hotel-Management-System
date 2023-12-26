@@ -25,7 +25,6 @@ export function RoomTypeSelector({handleRoomInputChange, newRoom}) {
         }
     }
 
-    // @ts-ignore
     return (
         <>
             {roomTypes.length > 0 && (
@@ -46,7 +45,7 @@ export function RoomTypeSelector({handleRoomInputChange, newRoom}) {
                         ))}
                         </select>
                     {showNewRoomTypeInput && (
-                        <div className={"input-group"}>
+                        <div className={"input-group mt-2"}>
                             <input className={"form-control"} type="text" placeholder={"Enter a new room type"} onChange={handleNewTypeRoomInputChange}/>
                             <button className={"btn btn-hotel"} type={"button"} onClick={handleAddNewRoomType}>Add</button>
                         </div>

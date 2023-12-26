@@ -31,7 +31,7 @@ public class RoomController {
 
     @PostMapping("/add/new-room")
     public ResponseEntity<RoomResponse> addNewRoom(@RequestParam("photo") MultipartFile photo, @RequestParam("roomType") String roomType, @RequestParam("roomPrice") BigDecimal roomPrice) throws SQLException, IOException {
-
+        System.out.println(roomType);
         Room savedRoom = ROOM_SERVICE.addNewRoom(photo, roomType, roomPrice);
         RoomResponse response = new RoomResponse(savedRoom.getId(), savedRoom.getRoomType(), savedRoom.getRoomPrice());
         return ResponseEntity.ok(response);
@@ -47,6 +47,9 @@ public class RoomController {
         return  ROOM_SERVICE.getAllRoomTypes();
     }
 
+
+
+    @GetMapping("/all-rooms")
     public ResponseEntity<List<RoomResponse>> getAllRooms() throws SQLException {
         List<Room> rooms= ROOM_SERVICE.getAllRooms();
         ArrayList<RoomResponse> roomResponses = new ArrayList<>();
@@ -66,9 +69,9 @@ public class RoomController {
 
     private RoomResponse getRoomResponse(Room room) {
         List<BookedRoom> bookings=getAllBookingsByRoomId(room.getId());
-        List<BookingResponse> bookingInfo=bookings
-                .stream()
-                .map((booking) -> new BookingResponse(booking.getBookingId(),booking.getCheckInDate(),booking.getCheckOutDate(),booking.getBookingConfirmationCode())).toList();
+//        List<BookingResponse> bookingInfo=bookings
+//                .stream()
+//                .map(booking -> new BookingResponse(booking.getBookingId(),booking.getCheckInDate(),booking.getCheckOutDate(),booking.getBookingConfirmationCode())).toList();
         byte[] photoBytes=null;
         Blob photoBlob= room.getPhoto();
         if(photoBlob!=null){
@@ -79,7 +82,7 @@ public class RoomController {
             }
         }
         return new RoomResponse(room.getId(),
-                room.getRoomType(),room.getRoomPrice(),room.isBooked(),photoBytes,bookingInfo);
+                room.getRoomType(),room.getRoomPrice(),room.isBooked(),photoBytes);
     }
 
     private List<BookedRoom> getAllBookingsByRoomId(Long roomId) {

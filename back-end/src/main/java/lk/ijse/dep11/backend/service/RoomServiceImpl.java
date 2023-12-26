@@ -53,6 +53,6 @@ public class RoomServiceImpl implements IRoomService{
         if(photoBlob!=null){
             return  photoBlob.getBytes(1,(int)photoBlob.length());
         }
-        return new byte[0];
+        return null;
     }
 }
