@@ -1,9 +1,11 @@
 package lk.ijse.dep11.backend.service;
 
+import lk.ijse.dep11.backend.exception.InternalServerException;
 import lk.ijse.dep11.backend.exception.ResourceNotFoundException;
 import lk.ijse.dep11.backend.model.Room;
 import lk.ijse.dep11.backend.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.reflect.InternalUseOnlyPointcutParser;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -50,7 +52,7 @@ public class RoomServiceImpl implements IRoomService{
             throw new ResourceNotFoundException("Sorry, Room not Found");
         }
         Blob photoBlob = theRoom.get().getPhoto();
-        if(photoBlob!=null){
+        if(photoBlob != null){
             return  photoBlob.getBytes(1,(int)photoBlob.length());
         }
         return null;
@@ -63,5 +65,25 @@ public class RoomServiceImpl implements IRoomService{
         if(theRoom.isPresent()){
             ROOM_REPOSITORY.deleteById(id);
         }
+    }
+
+    @Override
+    public Room updateRoom(Long roomId, String roomType, BigDecimal roomPrice, byte[] photoBytes) {
+        Room room = ROOM_REPOSITORY.findById(roomId).get();
+        if (roomType != null) room.setRoomType(roomType);
+        if (roomPrice != null) room.setRoomPrice(roomPrice);
+        if (photoBytes != null && photoBytes.length > 0) {
+            try {
+                room.setPhoto(new SerialBlob(photoBytes));
+            } catch (SQLException ex) {
+                throw new InternalServerException("Fail updating room");
+            }
+        }
+        return ROOM_REPOSITORY.save(room);
+    }
+
+    @Override
+    public Optional<Room> getRoomById(Long roomId) {
+        return Optional.of(ROOM_REPOSITORY.findById(roomId).get());
     }
 }

@@ -1,6 +1,8 @@
 import {ChangeEvent, FormEvent, useState} from "react";
 import {addRoom} from "../utils/ApiFunctions.ts";
 import {RoomTypeSelector} from "../common/RoomTypeSelector.tsx";
+import {Image} from "react-bootstrap";
+import {Link} from "react-router-dom";
 
 export function AddRoom() {
     const [newRoom, setNewRoom] = useState({
@@ -17,21 +19,19 @@ export function AddRoom() {
         const name = e.target.name;
         let value = e.target.value;
 
-        if (name === "roomPrice") {
-            if (!isNaN(Number(value))) {
-                value = String(parseInt(value, 10));
-            } else {
-                value = "";
-            }
-        } else {
-            value = "";
-        }
+        // if (name === "roomPrice") {
+        //     if (!isNaN(Number(value))) {
+        //         value = parseInt(value);
+        //     } else {
+        //         value = "";
+        //     }
+        // }
         setNewRoom({...newRoom,[name]:value})
     }
 
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
         const selectedImage = e.target.files![0];
-        let value  = e.target.value;
+
         // @ts-ignore
         setNewRoom({...newRoom,photo: selectedImage});
         setImagePreview(URL.createObjectURL(selectedImage));
@@ -102,8 +102,13 @@ export function AddRoom() {
                                 <img src={imagePreview} alt="image" style={{maxWidth: "400px", maxHeight: "400px"}} className={"mb-3"}/>
                             )}
                         </div>
-                        <div className={"d-grid d-md-flex mt-2 "}>
-                            <button className={"btn btn-outline-primary ml-5"}>Save Room</button>
+                        <div className="d-grid gap-2 d-md-flex mt-2">
+                            <Link to={"/existing-rooms"} className="btn btn-outline-info">
+                                Existing rooms
+                            </Link>
+                            <button type="submit" className="btn btn-outline-primary ml-5">
+                            Save Room
+                            </button>
                         </div>
                     </form>
 

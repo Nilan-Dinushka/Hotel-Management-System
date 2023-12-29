@@ -1,17 +1,17 @@
 import {useEffect, useState} from "react";
 import {deleteRoom, getAllRooms} from "../utils/ApiFunctions.ts";
-import {Col} from "react-bootstrap";
+import {Col, Row} from "react-bootstrap";
 import {RoomFilter} from "../common/RoomFilter.tsx";
 import {RoomPaginator} from "../common/RoomPaginator.tsx";
-import {FaEdit, FaEye, FaTrashAlt} from "react-icons/fa";
+import {FaEdit, FaEye, FaPlus, FaTrashAlt} from "react-icons/fa";
 import {Link} from "react-router-dom";
 
 export function ExistingRooms() {
-    const [rooms, setRooms] = useState([])
+    const [rooms, setRooms] = useState([{ id: "", roomType: "", roomPrice: "" }])
     const [currentPage, setCurrentPage] = useState(1)
     const [roomsPerPage] = useState(8)
     const [isLoading, setIsLoading] = useState(false)
-    const [filteredRooms, setFilteredRooms] = useState([])
+    const [filteredRooms, setFilteredRooms] = useState([{ id: "", roomType: "", roomPrice: "" }])
     const [selectedRoomType, setSelectedRoomType] = useState("");
     const [successMessage, setSuccessMessage] = useState("")
     const [errorMessage, setErrorMessage] = useState("")
@@ -21,14 +21,14 @@ export function ExistingRooms() {
         fetchRooms();
     }, []);
     const fetchRooms = async () => {
-        setIsLoading(true)
+        setIsLoading(true);
         try{
             const result = await getAllRooms()
             setRooms(result);
             setIsLoading(false)
         }catch (error:any){
             setErrorMessage(error.message)
-
+            setIsLoading(false);
         }
     }
 
@@ -42,14 +42,14 @@ export function ExistingRooms() {
         setCurrentPage(1)
     }, [rooms, selectedRoomType]);
 
-    const handlePaginationClick = (pageNumber) => {
+    const handlePaginationClick = (pageNumber:number) => {
         setCurrentPage(pageNumber)
     }
 
-    const handleDelete = async (roomId) => {
+    const handleDelete = async (roomId:number) => {
         try{
             const result = await deleteRoom(roomId);
-            if(result == ""){
+            if(result === ""){
                 setSuccessMessage(`Room No ${roomId} was deleted`)
                 fetchRooms()
             }else {
@@ -64,7 +64,7 @@ export function ExistingRooms() {
         },300)
     }
 
-    const calculateTotalPages = (filteredRooms, roomsPerPage, rooms) => {
+    const calculateTotalPages = (filteredRooms: string | any[], roomsPerPage: number, rooms: string | any[]) => {
         const totalRooms = filteredRooms.length > 0 ? filteredRooms.length : rooms.length
         return Math.ceil(totalRooms / roomsPerPage)
     }
@@ -75,16 +75,33 @@ export function ExistingRooms() {
 
     return (
         <>
+            <div className={"container col-md-8 col-lg-6"}>
+                {successMessage &&
+                    <p className={"alert alert-success mt-5"}>{successMessage}</p>
+                }
+                {errorMessage &&
+                    <p className={"alert alert-danger mt-5"}>{errorMessage}</p>
+                }
+            </div>
             {isLoading ? (
                 <p>Loading existing rooms</p>
             ): (
-                <section className={"mt-5 mb-5 container"}>
-                    <div className={"d-flex justify-content-center"}>
-                        <h2>Existing rooms</h2>
-                    </div>
-                    <Col md={6} className={"mb-3 mb-md-0"}>
-                        <RoomFilter data={rooms} setFilteredData={setFilteredRooms}/>
-                    </Col>
+                <>
+                    <section className={"mt-5 mb-5 container"}>
+                        <div className={"d-flex justify-content-center mb-3 mt-5"}>
+                            <h2>Existing rooms</h2>
+                        </div>
+                        <Row>
+                            <Col md={6} className={"mb-3 mb-md-0"}>
+                                <RoomFilter data={rooms} setFilteredData={setFilteredRooms}/>
+                            </Col>
+                            <Col md={6} className={"d-flex justify-content-end"}>
+                                <Link to={"/add-room"}>
+                                    <FaPlus />Add Room
+                                </Link>
+                            </Col>
+                        </Row>
+
 
                         <table className={"table table-bordered table-hover"}>
                             <thead>
@@ -102,26 +119,30 @@ export function ExistingRooms() {
                                     <td>{room.roomType}</td>
                                     <td>{room.roomPrice}</td>
                                     <td className={"gap-2"}>
-                                        <Link to={`/edit-room/${room.id}`}>
+                                        <Link to={`/edit-room/${room.id}`} className={"gap-2"}>
                                             <span className={"btn btn-info btn-sm"}>
-                                                <FaEye />
+                                                <FaEye/>
                                             </span>
-                                            <span className={"btn btn-warning btn-sm"}>
-                                                <FaEdit />
+                                            <span className={"btn btn-warning btn-sm ms-5"}>
+                                                <FaEdit/>
                                             </span>
                                         </Link>
-                                        <button className={"btn btn-danger btn-sm"} onClick={() => handleDelete(room.id)}>
+                                        <button className={"btn btn-danger btn-sm ms-5"}
+                                                onClick={() => handleDelete(Number(room.id))}>
 
-                                            <FaTrashAlt />
+                                            <FaTrashAlt/>
                                         </button>
                                     </td>
                                 </tr>
                             ))}
                             </tbody>
                         </table>
-                        <RoomPaginator currentPage={currentPage} totalPages={calculateTotalPages(filteredRooms, roomsPerPage,rooms)}
-                                       onPageChange={handlePaginationClick} />
-                </section>
+                        <RoomPaginator currentPage={currentPage}
+                                       totalPages={calculateTotalPages(filteredRooms, roomsPerPage, rooms)}
+                                       onPageChange={handlePaginationClick}/>
+                    </section>
+                </>
+
             )}
         </>
     );
