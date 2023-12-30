@@ -1,7 +1,17 @@
+import {MainHeader} from "../layout/MainHeader.tsx";
+import {HotelService} from "../common/HotelService.tsx";
+import {Parallax} from "../common/Parallax.tsx";
+
 export function Home() {
     return (
-        <div>
-            <h2>Welcome to the Home Page</h2>
-        </div>
+        <section>
+            <MainHeader />
+
+            <section className={"container"}>
+                <Parallax />
+                <HotelService />
+                <Parallax />
+            </section>
+        </section>
     );
 }
