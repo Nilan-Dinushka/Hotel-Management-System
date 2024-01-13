@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -11,6 +11,7 @@ import {NavBar} from "./components/layout/NavBar.tsx";
 import {Footer} from "./components/layout/Footer.tsx";
 import {RoomListing} from "./components/room/RoomListing.tsx";
 import {Admin} from "./components/admin/Admin.tsx";
+import {Checkout} from "./components/bookings/Checkout.tsx";
 
 function App() {
   const [count, setCount] = useState(0)
@@ -25,6 +26,7 @@ function App() {
                     <Route path={"/edit-room/:roomId"} element={<EditRoom />}/>
                     <Route path={"/existing-rooms"} element={<ExistingRooms />}/>
                     <Route path={"/add-room"} element={<AddRoom />}/>
+                    <Route path={"/book-room/:roomId"} element={<Checkout />}/>
                     <Route path={"/browse-all-rooms"} element={<RoomListing />}/>
                     <Route path={"/admin"} element={<Admin />}/>
                 </Routes>

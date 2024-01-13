@@ -5,7 +5,7 @@ import lk.ijse.dep11.backend.exception.ResourceNotFoundException;
 import lk.ijse.dep11.backend.model.BookedRoom;
 import lk.ijse.dep11.backend.model.Room;
 import lk.ijse.dep11.backend.response.RoomResponse;
-import lk.ijse.dep11.backend.service.BookingService;
+import lk.ijse.dep11.backend.service.BookingServiceImpl;
 import lk.ijse.dep11.backend.service.IRoomService;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -29,7 +29,7 @@ import java.util.Optional;
 @CrossOrigin
 public class RoomController {
     private final IRoomService ROOM_SERVICE;
-    private final BookingService BOOKING_SERVICE;
+    private final BookingServiceImpl BOOKING_SERVICE;
 
     @PostMapping("/add/new-room")
     public ResponseEntity<RoomResponse> addNewRoom(
