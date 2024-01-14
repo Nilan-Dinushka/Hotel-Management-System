@@ -12,6 +12,7 @@ import {Footer} from "./components/layout/Footer.tsx";
 import {RoomListing} from "./components/room/RoomListing.tsx";
 import {Admin} from "./components/admin/Admin.tsx";
 import {Checkout} from "./components/bookings/Checkout.tsx";
+import {BookingSuccess} from "./components/bookings/BookingSuccess.tsx";
 
 function App() {
   const [count, setCount] = useState(0)
@@ -29,6 +30,7 @@ function App() {
                     <Route path={"/book-room/:roomId"} element={<Checkout />}/>
                     <Route path={"/browse-all-rooms"} element={<RoomListing />}/>
                     <Route path={"/admin"} element={<Admin />}/>
+                    <Route path={"/booking-success"} element={<BookingSuccess />}/>
                 </Routes>
             </Router>
             <Footer />

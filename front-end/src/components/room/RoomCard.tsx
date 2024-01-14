@@ -18,7 +18,7 @@ export function RoomCard({room}) {
                         <Card.Text>Some room information goes here for the guest to read through</Card.Text>
                     </div>
                     <div className={"flex-shrink-0 mt-3"}>
-                        <Link to={`book-room/${room.id}`} className={"btn btn-hotel btn-sm"}>
+                        <Link to={`/book-room/${room.id}`} className={"btn btn-hotel btn-sm"}>
                             Book Now
                         </Link>
                     </div>

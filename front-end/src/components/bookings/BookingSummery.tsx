@@ -1,4 +1,4 @@
-import * as moment from "moment";
+import moment from "moment"
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {Button} from "react-bootstrap";
@@ -36,7 +36,7 @@ export function BookingSummery({booking, payment, isFormValid, onConfirm}) {
             <div className={"card card-body mt-5"}>
                 <h4 className={"card-title hotel-color"}>Reservation Summery</h4>
 
-                <p>Full Name : <strong>{booking.guestName}</strong></p>
+                <p>Full Name : <strong>{booking.guestFullName}</strong></p>
                 <p>Email : <strong>{booking.guestEmail}</strong></p>
                 <p>Check-In Date : <strong>{moment(booking.checkInDate).format("MMM Do YYYY")}</strong></p>
                 <p>Check-Out Date : <strong>{moment(booking.checkOutDate).format("MMM Do YYYY")}</strong></p>
@@ -47,7 +47,7 @@ export function BookingSummery({booking, payment, isFormValid, onConfirm}) {
                         Adult{booking.numberOfAdults > 1 ? "s" : ""} : {booking.numberOfAdults}
                     </strong>
                     <strong>
-                        Children : {booking.numberOfChildren}
+                        <p>Children : {booking.numberOfChildren}</p>
                     </strong>
                 </div>
                 {payment > 0 ? (

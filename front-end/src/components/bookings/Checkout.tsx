@@ -1,6 +1,9 @@
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {getRoomById} from "../utils/ApiFunctions.ts";
+import {FaCar, FaParking, FaTshirt, FaTv, FaUtensils, FaWifi, FaWineGlassAlt} from "react-icons/fa";
+import {BookingForm} from "./BookingForm.tsx";
+import {RoomCarousel} from "../common/RoomCarousel.tsx";
 
 export function Checkout() {
 
@@ -28,6 +31,68 @@ export function Checkout() {
     }, [roomId]);
 
     return (
-        <></>
+        <div>
+            <section className={"container"}>
+                <div className={"row"}>
+                    <div className={"col-md-4 mt-5 mb-5"}>
+                        {isLoading ? (
+                            <p>Loading room information...</p>
+                        ) : error ? (
+                            <p>{error}</p>
+                        ) : (
+                            <div className={"room-info"}>
+                                <img src={`data:image/png;base64,${roomInfo.photo}`} alt="room photo" style={{width: "100%", height: "200px"}}/>
+                                <table className={"table table-bordered"}>
+                                    <tbody>
+                                    <tr>
+                                        <th>Room Type:</th>
+                                        <td>{roomInfo.roomType}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Price per night:</th>
+                                        <td>${roomInfo.roomPrice}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Room Service:</th>
+                                        <td>
+                                            <ul className={"list-unstyled"}>
+                                                <li>
+                                                    <FaWifi/> Wifi
+                                                </li>
+                                                <li>
+                                                    <FaTv/> Wifi
+                                                </li>
+                                                <li>
+                                                    <FaUtensils/> Wifi
+                                                </li>
+                                                <li>
+                                                    <FaWineGlassAlt/> Wifi
+                                                </li>
+                                                <li>
+                                                    <FaCar/> Wifi
+                                                </li>
+                                                <li>
+                                                    <FaParking/> Wifi
+                                                </li>
+                                                <li>
+                                                    <FaTshirt/> Wifi
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+                    </div>
+                    <div className={"col-md-8"}>
+                        <BookingForm />
+                    </div>
+                </div>
+            </section>
+            <div className={"container"}>
+                <RoomCarousel />
+            </div>
+        </div>
     );
 }

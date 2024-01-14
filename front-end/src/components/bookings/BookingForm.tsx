@@ -1,7 +1,7 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {bookRoom, getRoomById} from "../utils/ApiFunctions.ts";
 import {useNavigate, useParams} from "react-router-dom";
-import * as moment from "moment";
+import moment from "moment"
 import {Form, FormControl} from "react-bootstrap";
 import {BookingSummery} from "./BookingSummery.tsx";
 
@@ -14,7 +14,7 @@ export function BookingForm() {
 
 
     const [booking, setBooking] = useState({
-        guestName : "",
+        guestFullName : "",
         guestEmail : "",
         checkInDate : "",
         checkOutDate : "",
@@ -29,7 +29,7 @@ export function BookingForm() {
 
     const{roomId} = useParams()
     const navigate = useNavigate();
-    const handleInputChange = (e:any) => {
+    const handleInputChange = (e: { target: { name: any; value: any; }; }) => {
         const{name, value} = e.target;
         setBooking({...booking, [name]:value})
         setErrorMessage("")
@@ -79,6 +79,7 @@ export function BookingForm() {
             e.stopPropagation();
         }else {
             setIsSubmitted(true)
+            console.log("submitted set to true")
         }
         setIsValidated(true);
     }
@@ -105,7 +106,7 @@ export function BookingForm() {
                             <Form noValidate validated={isValidated} onSubmit={handleSubmit}>
                                 <Form.Group>
                                     <Form.Label htmlFor={"guestFullName"} className={"hotel-color"}>Full Name :</Form.Label>
-                                <FormControl required type={"text"} id={"guestFullName"} name={"guestFullName"} value={booking.guestName} placeholder={"Enter your full name"} onChange={handleInputChange} />
+                                <FormControl required type={"text"} id={"guestFullName"} name={"guestFullName"} value={booking.guestFullName} placeholder={"Enter your full name"} onChange={handleInputChange} />
                                 <Form.Control.Feedback type={"invalid"}>
                                     Please enter your full name
                                 </Form.Control.Feedback>
@@ -171,7 +172,7 @@ export function BookingForm() {
                                     </div>
                                 </fieldset>
 
-                                <div className={"form-group mt-2 mb-2"}>
+                                <div className={"fom-group mt-2 mb-2"}>
                                     <button type={"submit"} className={"btn btn-hotel"}>Continue</button>
                                 </div>
                             </Form>
@@ -179,7 +180,7 @@ export function BookingForm() {
                     </div>
                     <div className={"col-md-6"}>
                         {isSubmitted && (
-                            <BookingSummery booking={booking} payment={calculatePayment} isFormValid={isValidated} onConfirm={handleBooking}/>
+                            <BookingSummery booking={booking} payment={calculatePayment()} isFormValid={isValidated} onConfirm={handleBooking}/>
                         )}
                     </div>
                 </div>
